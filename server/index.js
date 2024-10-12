@@ -44,15 +44,38 @@ app.get('/api/user', (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const startServer = (port) => {
+  return new Promise((resolve, reject) => {
+    const server = app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+      resolve(server);
+    });
 
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.log(`Port ${PORT} is already in use. Trying port ${PORT + 1}`);
-    server.close();
-    app.listen(PORT + 1, () => console.log(`Server running on port ${PORT + 1}`));
-  } else {
-    console.error('An error occurred:', error);
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.log(`Port ${port} is already in use. Trying next port.`);
+        reject(error);
+      } else {
+        console.error('An error occurred:', error);
+        reject(error);
+      }
+    });
+  });
+};
+
+const PORT = parseInt(process.env.PORT, 10) || 5000;
+const MAX_PORT_ATTEMPTS = 10;
+
+(async () => {
+  for (let i = 0; i < MAX_PORT_ATTEMPTS; i++) {
+    try {
+      await startServer(PORT + i);
+      break;
+    } catch (error) {
+      if (i === MAX_PORT_ATTEMPTS - 1) {
+        console.error(`Unable to start server after ${MAX_PORT_ATTEMPTS} attempts.`);
+        process.exit(1);
+      }
+    }
   }
-});
+})();
