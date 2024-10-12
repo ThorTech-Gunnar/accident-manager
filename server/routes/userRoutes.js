@@ -5,7 +5,7 @@ import { authenticate, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/auth/login', login);
+router.post('/login', login);
 router.get('/', authenticate, authorize(['Admin']), getUsers);
 router.get('/:id', authenticate, getUserById);
 router.put('/:id', authenticate, authorize(['Admin']), updateUser);

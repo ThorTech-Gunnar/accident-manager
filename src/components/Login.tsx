@@ -13,7 +13,9 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
+      console.log('Attempting login with:', { username, password });
       const { user, token } = await login({ username, password });
+      console.log('Login successful:', { user, token });
       // The setCurrentUser function in authService will handle storing the user and token
       navigate('/');
     } catch (err) {

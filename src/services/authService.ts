@@ -1,7 +1,7 @@
 import { LoginCredentials, AuthState } from '../types';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api'; // Replace with your actual API URL
+const API_URL = 'http://localhost:5000/api'; // Updated to match the server port
 
 export const login = async (credentials: LoginCredentials): Promise<AuthState> => {
   try {

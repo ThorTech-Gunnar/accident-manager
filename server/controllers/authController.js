@@ -5,11 +5,21 @@ export const login = (req, res) => {
   console.log('Login attempt:', req.body);
   const { username, password } = req.body;
 
-  const user = findUserByUsername(username);
-  console.log('User found:', user);
+  if (!username || !password) {
+    console.log('Login failed: Missing username or password');
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
 
-  if (!user || user.password !== password) {
-    console.log('Login failed: Invalid credentials');
+  const user = findUserByUsername(username);
+  console.log('User found:', user ? 'Yes' : 'No');
+
+  if (!user) {
+    console.log('Login failed: User not found');
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+  if (user.password !== password) {
+    console.log('Login failed: Incorrect password');
     return res.status(401).json({ message: 'Invalid credentials' });
   }
 
