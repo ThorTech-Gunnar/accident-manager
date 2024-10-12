@@ -2,10 +2,14 @@ import { findUserByUsername } from '../data/users.js';
 import jwt from 'jsonwebtoken';
 
 export const login = (req, res) => {
+  console.log('Login attempt:', req.body);
   const { username, password } = req.body;
 
   const user = findUserByUsername(username);
+  console.log('User found:', user);
+
   if (!user || user.password !== password) {
+    console.log('Login failed: Invalid credentials');
     return res.status(401).json({ message: 'Invalid credentials' });
   }
 
@@ -15,6 +19,7 @@ export const login = (req, res) => {
     { expiresIn: '1d' }
   );
 
+  console.log('Login successful for user:', user.username);
   res.json({
     user: {
       id: user.id,

@@ -17,10 +17,11 @@ const Login: React.FC = () => {
       // The setCurrentUser function in authService will handle storing the user and token
       navigate('/');
     } catch (err) {
+      console.error('Login error:', err);
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('An error occurred during login');
+        setError('An unexpected error occurred during login');
       }
     }
   };

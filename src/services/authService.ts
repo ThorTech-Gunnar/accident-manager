@@ -5,12 +5,16 @@ const API_URL = 'http://localhost:3000/api'; // Replace with your actual API URL
 
 export const login = async (credentials: LoginCredentials): Promise<AuthState> => {
   try {
+    console.log('Attempting login with credentials:', credentials);
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
+    console.log('Login response:', response.data);
     const { user, token } = response.data;
     setCurrentUser({ user, token });
     return { user, token };
   } catch (error) {
+    console.error('Login error:', error);
     if (axios.isAxiosError(error) && error.response) {
+      console.error('Server response:', error.response.data);
       throw new Error(error.response.data.message || 'Invalid credentials');
     }
     throw new Error('An error occurred during login');
