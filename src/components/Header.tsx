@@ -20,7 +20,7 @@ const Header: React.FC = () => {
             <Menu size={24} className="text-primary" />
           </button>
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/altitude-logo.png" alt="Altitude Trampoline Park" className="h-10" />
+            <img src="/AltitudeLOGO_edited.jpg" alt="Altitude Trampoline Park" className="h-10" />
             <span className="text-xl font-semibold text-primary hidden md:inline">Incident Management</span>
           </Link>
         </div>

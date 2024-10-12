@@ -8,25 +8,25 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: '#2c5282',
-          light: '#4299e1',
-          dark: '#2a4365',
+          DEFAULT: '#8a4baf', // Medium purple
+          light: '#b088c9', // Light purple
+          dark: '#663399', // Dark purple (closer to logo color)
         },
         secondary: {
-          DEFAULT: '#63b3ed',
-          dark: '#3182ce',
+          DEFAULT: '#d8bfd8', // Thistle (light purple)
+          dark: '#b088c9', // Light purple (same as primary.light for consistency)
         },
-        accent: '#4fd1c5',
-        background: '#f7fafc',
-        surface: '#ffffff',
+        accent: '#e6e6fa', // Lavender (very light purple)
+        background: '#ffffff', // White
+        surface: '#faf0ff', // Very light purple (almost white)
         text: {
-          DEFAULT: '#2d3748',
-          light: '#4a5568',
+          DEFAULT: '#4a0e4e', // Dark purple for text
+          light: '#7c3aed', // Lighter purple for less emphasis
         },
-        border: '#e2e8f0',
-        success: '#48bb78',
-        warning: '#ecc94b',
-        danger: '#f56565',
+        border: '#d8bfd8', // Thistle (light purple, same as secondary)
+        success: '#48bb78', // Keep existing success color
+        warning: '#ecc94b', // Keep existing warning color
+        danger: '#f56565', // Keep existing danger color
       },
     },
   },
