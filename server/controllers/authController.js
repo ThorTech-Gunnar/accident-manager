@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { findUserByUsername } from '../data/users.js';
 import jwt from 'jsonwebtoken';
 
