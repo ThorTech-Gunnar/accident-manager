@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-md">
         <div className="flex flex-col items-center">
-          <img className="h-24 w-auto mb-8" src="/AltitudeLOGO_edited.jpg" alt="Altitude Trampoline Park" />
+          <img className="h-32 w-auto mb-8" src="/AltitudeLOGO_edited.jpg" alt="Altitude Trampoline Park" />
           <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
         {error && <p className="text-red-500 text-center">{error}</p>}
