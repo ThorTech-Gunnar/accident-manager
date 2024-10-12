@@ -1,17 +1,17 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import { findUserByUsername } from '../data/users.js';
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
-    if (!user || !(await user.comparePassword(password))) {
+    const user = findUserByUsername(username);
+    if (!user || user.password !== password) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.json({ user: { id: user._id, username, role: user.role, firstName: user.firstName, lastName: user.lastName }, token });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'your-secret-key', { expiresIn: '1d' });
+    res.json({ user: { id: user.id, username, role: user.role, firstName: user.firstName, lastName: user.lastName }, token });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

@@ -1,23 +1,16 @@
-import { User, LoginCredentials, AuthState } from '../types';
+import { LoginCredentials, AuthState } from '../types';
+import axios from 'axios';
 
-// Simulated user data (replace with actual backend integration)
-const users: User[] = [
-  { id: '1', username: 'admin', email: 'admin@example.com', role: 'Admin', firstName: 'Admin', lastName: 'User' },
-  { id: '2', username: 'manager', email: 'manager@example.com', role: 'Manager', firstName: 'Manager', lastName: 'User' },
-  { id: '3', username: 'staff', email: 'staff@example.com', role: 'Staff', firstName: 'Staff', lastName: 'User' },
-];
+const API_URL = 'http://localhost:3000/api'; // Replace with your actual API URL
 
 export const login = async (credentials: LoginCredentials): Promise<AuthState> => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  const user = users.find(u => u.username === credentials.username);
-  if (user) {
-    // In a real app, you'd verify the password here
-    const token = btoa(JSON.stringify(user)); // This is not secure, just for demonstration
+  try {
+    const response = await axios.post(`${API_URL}/auth/login`, credentials);
+    const { user, token } = response.data;
     return { user, token };
+  } catch (error) {
+    throw new Error('Invalid credentials');
   }
-  throw new Error('Invalid credentials');
 };
 
 export const logout = (): void => {

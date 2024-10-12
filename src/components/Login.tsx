@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
-import { login } from '../services/api';
+import { login } from '../services/authService';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -13,9 +13,9 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await login({ username, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      const { user, token } = await login({ username, password });
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       navigate('/');
     } catch (err) {
       setError('Invalid username or password');
