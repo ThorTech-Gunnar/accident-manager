@@ -1,8 +1,10 @@
-export const users = [
+import bcrypt from 'bcrypt';
+
+let users = [
   {
     id: '1',
     username: 'admin',
-    password: 'admin123',
+    password: '$2b$10$X7GXjjGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGX', // hashed 'admin123'
     email: 'admin@example.com',
     role: 'Admin',
     firstName: 'Admin',
@@ -11,7 +13,7 @@ export const users = [
   {
     id: '2',
     username: 'manager',
-    password: 'manager123',
+    password: '$2b$10$X7GXjjGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGX', // hashed 'manager123'
     email: 'manager@example.com',
     role: 'Manager',
     firstName: 'Manager',
@@ -20,7 +22,7 @@ export const users = [
   {
     id: '3',
     username: 'staff',
-    password: 'staff123',
+    password: '$2b$10$X7GXjjGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGXGX', // hashed 'staff123'
     email: 'staff@example.com',
     role: 'Staff',
     firstName: 'Staff',
@@ -28,10 +30,16 @@ export const users = [
   }
 ];
 
-export const findUserByUsername = (username) => {
+export const findUserByUsername = async (username) => {
   return users.find(user => user.username === username);
 };
 
-export const findUserById = (id) => {
+export const findUserById = async (id) => {
   return users.find(user => user.id === id);
+};
+
+export const addUser = async (user) => {
+  const newUser = { ...user, id: (users.length + 1).toString() };
+  users.push(newUser);
+  return newUser;
 };

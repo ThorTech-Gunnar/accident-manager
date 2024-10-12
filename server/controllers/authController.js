@@ -1,7 +1,8 @@
-import { findUserByUsername } from '../data/users.js';
+import { findUserByUsername, addUser } from '../data/users.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
-export const login = (req, res) => {
+export const login = async (req, res) => {
   console.log('Login attempt:', req.body);
   const { username, password } = req.body;
 
@@ -10,7 +11,7 @@ export const login = (req, res) => {
     return res.status(400).json({ message: 'Username and password are required' });
   }
 
-  const user = findUserByUsername(username);
+  const user = await findUserByUsername(username);
   console.log('User found:', user ? 'Yes' : 'No');
 
   if (!user) {
@@ -18,14 +19,15 @@ export const login = (req, res) => {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
 
-  if (user.password !== password) {
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
     console.log('Login failed: Incorrect password');
     return res.status(401).json({ message: 'Invalid credentials' });
   }
 
   const token = jwt.sign(
     { id: user.id, role: user.role },
-    process.env.JWT_SECRET || 'your-secret-key',
+    process.env.JWT_SECRET,
     { expiresIn: '1d' }
   );
 
@@ -46,17 +48,19 @@ export const register = async (req, res) => {
   const { username, email, password, role, firstName, lastName } = req.body;
 
   try {
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    const existingUser = await findUserByUsername(username);
     if (existingUser) {
-      return res.status(400).json({ message: 'Username or email already exists' });
+      return res.status(400).json({ message: 'Username already exists' });
     }
 
-    const user = new User({ username, email, password, role, firstName, lastName });
-    await user.save();
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = { username, email, password: hashedPassword, role, firstName, lastName };
+    const user = await addUser(newUser);
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.status(201).json({ user: { id: user._id, username, role: user.role, firstName, lastName }, token });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    res.status(201).json({ user: { id: user.id, username, role: user.role, firstName, lastName }, token });
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
