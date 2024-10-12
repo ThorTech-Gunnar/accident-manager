@@ -15,9 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-const MONGODB_URI = `mongodb+srv://rtayzlfu:abc93d0d-863c-4d2f-845a-d7a8ebda0277@cluster0.mongodb.net/incidentManagementDB?retryWrites=true&w=majority`;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI)
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
