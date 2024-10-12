@@ -49,4 +49,5 @@ const ipAddress = getIPAddress();
 
 app.listen(PORT, () => {
   console.log(`Server running on http://${ipAddress}:${PORT}`);
+  console.log(`Host IP address: ${ipAddress}`);
 });
