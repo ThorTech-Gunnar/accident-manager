@@ -7,9 +7,13 @@ export const login = async (credentials: LoginCredentials): Promise<AuthState> =
   try {
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
     const { user, token } = response.data;
+    setCurrentUser({ user, token });
     return { user, token };
   } catch (error) {
-    throw new Error('Invalid credentials');
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message || 'Invalid credentials');
+    }
+    throw new Error('An error occurred during login');
   }
 };
 

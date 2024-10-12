@@ -1,20 +1,31 @@
 import jwt from 'jsonwebtoken';
 import { findUserByUsername } from '../data/users.js';
+import jwt from 'jsonwebtoken';
 
-export const login = async (req, res) => {
+export const login = (req, res) => {
   const { username, password } = req.body;
 
-  try {
-    const user = findUserByUsername(username);
-    if (!user || user.password !== password) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'your-secret-key', { expiresIn: '1d' });
-    res.json({ user: { id: user.id, username, role: user.role, firstName: user.firstName, lastName: user.lastName }, token });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+  const user = findUserByUsername(username);
+  if (!user || user.password !== password) {
+    return res.status(401).json({ message: 'Invalid credentials' });
   }
+
+  const token = jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET || 'your-secret-key',
+    { expiresIn: '1d' }
+  );
+
+  res.json({
+    user: {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName
+    },
+    token
+  });
 };
 
 export const register = async (req, res) => {

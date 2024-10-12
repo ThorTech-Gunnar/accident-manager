@@ -14,11 +14,14 @@ const Login: React.FC = () => {
     setError('');
     try {
       const { user, token } = await login({ username, password });
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      // The setCurrentUser function in authService will handle storing the user and token
       navigate('/');
     } catch (err) {
-      setError('Invalid username or password');
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An error occurred during login');
+      }
     }
   };
 
