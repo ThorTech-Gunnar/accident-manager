@@ -14,6 +14,9 @@ const Layout: React.FC = () => {
             <Outlet />
           </div>
         </main>
+        <footer className="bg-surface border-t border-border py-4 text-center text-sm text-text-light">
+          © {new Date().getFullYear()} Altitude Trampoline Park. All rights reserved.
+        </footer>
       </div>
     </div>
   );

@@ -8,27 +8,42 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: '#8a4baf', // Medium purple
-          light: '#b088c9', // Light purple
-          dark: '#663399', // Dark purple (closer to logo color)
+          DEFAULT: '#8a4baf',
+          light: '#b088c9',
+          dark: '#663399',
         },
         secondary: {
-          DEFAULT: '#d8bfd8', // Thistle (light purple)
-          dark: '#b088c9', // Light purple (same as primary.light for consistency)
+          DEFAULT: '#d8bfd8',
+          dark: '#b088c9',
         },
-        accent: '#e6e6fa', // Lavender (very light purple)
-        background: '#ffffff', // White
-        surface: '#faf0ff', // Very light purple (almost white)
+        accent: '#e6e6fa',
+        background: '#f8f9fa',
+        surface: '#ffffff',
         text: {
-          DEFAULT: '#4a0e4e', // Dark purple for text
-          light: '#7c3aed', // Lighter purple for less emphasis
+          DEFAULT: '#333333',
+          light: '#666666',
         },
-        border: '#d8bfd8', // Thistle (light purple, same as secondary)
-        success: '#48bb78', // Keep existing success color
-        warning: '#ecc94b', // Keep existing warning color
-        danger: '#f56565', // Keep existing danger color
+        border: '#e0e0e0',
+        success: '#48bb78',
+        warning: '#ecc94b',
+        danger: '#f56565',
+      },
+      boxShadow: {
+        card: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.text-shadow': {
+          textShadow: '0 2px 4px rgba(0,0,0,0.10)',
+        },
+        '.transition-fast': {
+          transition: 'all 0.2s ease',
+        },
+      }
+      addUtilities(newUtilities)
+    }
+  ],
 };
