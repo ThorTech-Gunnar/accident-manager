@@ -45,4 +45,14 @@ app.get('/api/user', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.log(`Port ${PORT} is already in use. Trying port ${PORT + 1}`);
+    server.close();
+    app.listen(PORT + 1, () => console.log(`Server running on port ${PORT + 1}`));
+  } else {
+    console.error('An error occurred:', error);
+  }
+});
