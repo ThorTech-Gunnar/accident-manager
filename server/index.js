@@ -42,6 +42,7 @@ app.get('/api/protected', authenticate, (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+const MAX_PORT_ATTEMPTS = 10;
 
 function getIPAddress() {
   const interfaces = os.networkInterfaces();
@@ -59,7 +60,20 @@ function getIPAddress() {
 
 const ipAddress = getIPAddress();
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://${ipAddress}:${PORT}`);
-  console.log(`Host IP address: ${ipAddress}`);
-});
+function startServer(port) {
+  app.listen(port)
+    .on('listening', () => {
+      console.log(`Server running on http://${ipAddress}:${port}`);
+      console.log(`Host IP address: ${ipAddress}`);
+    })
+    .on('error', (err) => {
+      if (err.code === 'EADDRINUSE' && port < PORT + MAX_PORT_ATTEMPTS) {
+        console.log(`Port ${port} is in use, trying ${port + 1}...`);
+        startServer(port + 1);
+      } else {
+        console.error('Failed to start server:', err);
+      }
+    });
+}
+
+startServer(PORT);
