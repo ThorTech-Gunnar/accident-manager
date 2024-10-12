@@ -27,7 +27,7 @@ export const login = async (req, res) => {
 
   const token = jwt.sign(
     { id: user.id, role: user.role },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || 'fallback_secret_key',
     { expiresIn: '1d' }
   );
 
@@ -57,7 +57,7 @@ export const register = async (req, res) => {
     const newUser = { username, email, password: hashedPassword, role, firstName, lastName };
     const user = await addUser(newUser);
 
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'fallback_secret_key', { expiresIn: '1d' });
     res.status(201).json({ user: { id: user.id, username, role: user.role, firstName, lastName }, token });
   } catch (error) {
     console.error('Registration error:', error);

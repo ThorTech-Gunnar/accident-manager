@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import { authenticate } from './middleware/auth.js';
 import os from 'os';
 
@@ -23,6 +24,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
 
 // Routes
 app.use('/api', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Protected route example
 app.get('/api/protected', authenticate, (req, res) => {
