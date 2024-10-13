@@ -32,6 +32,15 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface RegisterCredentials {
+  username: string;
+  email: string;
+  password: string;
+  role: 'Admin' | 'Manager' | 'Staff';
+  firstName: string;
+  lastName: string;
+}
+
 export interface AuthState {
   user: User | null;
   token: string | null;

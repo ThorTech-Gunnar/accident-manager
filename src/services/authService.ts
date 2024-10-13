@@ -1,4 +1,4 @@
-import { LoginCredentials, AuthState } from '../types';
+import { LoginCredentials, AuthState, RegisterCredentials } from '../types';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api'; // Updated to match the server port
@@ -18,6 +18,24 @@ export const login = async (credentials: LoginCredentials): Promise<AuthState> =
       throw new Error(error.response.data.message || 'Invalid credentials');
     }
     throw new Error('An error occurred during login');
+  }
+};
+
+export const register = async (credentials: RegisterCredentials): Promise<AuthState> => {
+  try {
+    console.log('Attempting registration with credentials:', credentials);
+    const response = await axios.post(`${API_URL}/auth/register`, credentials);
+    console.log('Registration response:', response.data);
+    const { user, token } = response.data;
+    setCurrentUser({ user, token });
+    return { user, token };
+  } catch (error) {
+    console.error('Registration error:', error);
+    if (axios.isAxiosError(error) && error.response) {
+      console.error('Server response:', error.response.data);
+      throw new Error(error.response.data.message || 'Registration failed');
+    }
+    throw new Error('An error occurred during registration');
   }
 };
 
